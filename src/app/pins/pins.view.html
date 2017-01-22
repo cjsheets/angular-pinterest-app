@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="row row-blue">
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row" *ngIf="currentRoute === 'pins'">
+    <div class="col-sm-12">
+      <h3>Cast Your Vote!</h3>
+    </div>
+  </div>
+  <div class="row" *ngIf="currentRoute === 'my-pins'">
+    <div class="col-sm-6">
+      <h3>Manage Your Pins</h3>
+    </div>
+    <div class="col-sm-6 text-right">
+      <button class="btn btn-md btn-outline-primary" [routerLink]="['/av/new']">New Pin</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm" *ngIf="bricks.length > 0">
+      <masonry [options]="{transitionDuration: '0.0000001s'}">
+        <masonry-brick class="brick" *ngFor="let brick of bricks; let i = index">
+          <div class="brick-header">
+            {{brick.question}}
+          </div>
+            <div class="brick-body" *ngIf="currentRoute === 'my-pins'">
+              <div>
+                <div class="brick-button" [routerLink]="['/av/edit', brick.rKey, brick.pKey]">
+                  Edit
+                </div>
+                <div class="brick-button" (click)="open(confirm, brick.question, brick.rKey, brick.pKey)">
+                  Delete
+                </div>
+              </div>
+            </div>
+          <div class="brick-footer" [routerLink]="['/av/vote', brick.rKey]">
+            Vote
+          </div>
+          </masonry-brick>
+      </masonry>
+    </div>
+    <div class="col-sm text-center" *ngIf="bricks.length === 0">
+      <br><br>
+      <p>Create a <a [routerLink]="['/av/new']">New Pin</a> to get started!</p>
+      <br><br>
+    </div>
+  </div>
+</div>
+
+<template #confirm let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">Are You Sure?</h5>
+  </div>
+  <div class="modal-body">
+    <p>The pin: &#34;<span style="color: #666666;">{{pinToDelete}}</span>&#34; and all its votes will be permanently removed.</p>
+    <p>Deleted pins are not recoverable.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="c()">Yes, Delete It</button>
+    <button type="button" class="btn btn-md btn-outline-secondary" (click)="d()">Cancel</button>
+  </div>
+</template>
+<div>
+</div>
