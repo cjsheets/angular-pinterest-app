@@ -42,7 +42,7 @@ export class AuthService {
 
   logout(): void {
     this.af.auth.logout();
-    this.router.navigate(['']);
+    this.router.navigate(['/ap']);
   }
 
   getUID(): string {

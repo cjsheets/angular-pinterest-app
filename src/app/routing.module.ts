@@ -12,8 +12,8 @@ export const routedComponents = [
 ];
 
 const routes: Routes = [
+  { path: 'ap/my-pins', component: PinsComponent },
   { path: 'ap', component: PinsComponent },
-  { path: 'ap/mine', component: PinsComponent },
   { path: '**', redirectTo: 'ap', pathMatch: 'full' }
 ];
 

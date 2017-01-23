@@ -15,7 +15,7 @@
       <h3>Manage Your Pins</h3>
     </div>
     <div class="col-sm-6 text-right">
-      <button class="btn btn-md btn-outline-primary" [routerLink]="['/av/new']">New Pin</button>
+      <button class="btn btn-md btn-outline-primary" [routerLink]="['/ap']">New Pin</button>
     </div>
   </div>
 
@@ -28,7 +28,7 @@
           </div>
             <div class="brick-body" *ngIf="currentRoute === 'my-pins'">
               <div>
-                <div class="brick-button" [routerLink]="['/av/edit', brick.rKey, brick.pKey]">
+                <div class="brick-button" [routerLink]="['/ap', brick.rKey, brick.pKey]">
                   Edit
                 </div>
                 <div class="brick-button" (click)="open(confirm, brick.question, brick.rKey, brick.pKey)">
@@ -36,7 +36,7 @@
                 </div>
               </div>
             </div>
-          <div class="brick-footer" [routerLink]="['/av/vote', brick.rKey]">
+          <div class="brick-footer" [routerLink]="['/ap', brick.rKey]">
             Vote
           </div>
           </masonry-brick>
@@ -44,11 +44,41 @@
     </div>
     <div class="col-sm text-center" *ngIf="bricks.length === 0">
       <br><br>
-      <p>Create a <a [routerLink]="['/av/new']">New Pin</a> to get started!</p>
+      <p>Create a <a [routerLink]="['/ap']">New Pin</a> to get started!</p>
       <br><br>
     </div>
   </div>
 </div>
+
+<!--Thanks to: http://codepen.io/simoberny/pen/pJZJQY -->
+<div id="container-floating">
+  <div class="nd3 nds" (click)="open(add)">
+    <p class="letter" (mouseenter)="openTooltip(1)" (mouseleave)="closeTooltip(1)" (click)="closeTooltip(1)">
+      <i class="zmdi zmdi-link"></i>
+    </p>
+  </div>
+  <div class="nd1 nds" [routerLink]="['/ap/my-pins']" *ngIf="currentRoute == 'ap'">
+    <p class="letter" (mouseenter)="openTooltip(3)" (mouseleave)="closeTooltip(3)" (click)="closeTooltip(3)">
+      <i class="zmdi zmdi-account-o"></i>
+    </p>
+  </div>
+  <div class="nd1 nds" [routerLink]="['/ap']" *ngIf="currentRoute == 'my-pins'">
+    <p class="letter" (mouseenter)="openTooltip(2)" (mouseleave)="closeTooltip(2)" (click)="closeTooltip(2)">
+      <i class="zmdi zmdi-accounts-outline"></i>
+    </p>
+  </div>
+  <div id="floating-button">
+    <p class="plus"><i class="zmdi zmdi-plus"></i></p>
+    <p class="edit"><i class="zmdi zmdi-chevron-up"></i></p>
+  <div placement="left" ngbTooltip="New Pin" #t1="ngbTooltip" triggers="manual"
+  class="tt1"></div>
+  <div placement="left" ngbTooltip="All Pins" #t2="ngbTooltip" triggers="manual"
+  class="tt2"></div>
+  <div placement="left" ngbTooltip="Your Pins" #t3="ngbTooltip" triggers="manual"
+  class="tt3"></div>
+  </div>
+</div>
+
 
 <template #confirm let-c="close" let-d="dismiss">
   <div class="modal-header">
@@ -63,5 +93,21 @@
     <button type="button" class="btn btn-md btn-outline-secondary" (click)="d()">Cancel</button>
   </div>
 </template>
-<div>
-</div>
+
+<template #add let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">Link to a Pin</h5>
+  </div>
+  <div class="modal-footer">
+<form #f="ngForm" novalidate (ngSubmit)="stockSubmit(f.value)">
+    <div class="input-group">
+      <input class="form-control input-sm" placeholder="Image URL"
+        [(ngModel)]="model" name="stocksymbol">
+      <span class="input-group-btn">
+        <button class="btn btn-success col-form-label-sm" type="button"
+         (click)="stockSubmit(f.value)">Pin</button>
+      </span>
+    </div>
+</form>
+  </div>
+</template>

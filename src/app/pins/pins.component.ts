@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FirebaseListObservable,
   FirebaseObjectObservable } from 'angularfire2';
 import { Subscription }   from 'rxjs/Subscription';
 import { AuthService } from '../navbar/auth.service';
+
+import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 
 import { Logger } from '../shared/logger.service';
 import { FirebaseDbService } from '../shared/firebase-db.service';
@@ -12,7 +14,8 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'pins',
-  templateUrl: './pins.view.html'
+  templateUrl: './pins.view.html',
+  styleUrls: ['./pins.view.css']
 })
 export class PinsComponent implements OnInit { 
   private currentRoute: string;
@@ -23,6 +26,9 @@ export class PinsComponent implements OnInit {
   private subs: Subscription[] = [];
 
   private pinToDelete = '';
+  @ViewChild('t1') public tooltip1: NgbTooltip;
+  @ViewChild('t2') public tooltip2: NgbTooltip;
+  @ViewChild('t3') public tooltip3: NgbTooltip;
 
   constructor(
     private modalService: NgbModal,
@@ -35,75 +41,32 @@ export class PinsComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs[this.subs.length] = this.route.url.subscribe(url => {
-      this.currentRoute = url[1].path;
-
-      if(this.currentRoute == 'pins'){
-        //this._log['log']('PinsComponent :: ngOnInit()')
-        this.pinList$ = this._FireDb.getPins();
-        this.setupPins();
-
-      } else { // Route: my-pins
-        this.subs[this.subs.length] = this._auth.af.auth.subscribe(auth => {
-          if(auth) {
-            this.myPinList$ = this._FireDb.getMyPins(this._auth.getUID());
-            this.setupMyPins();
-          }
-        });
-      }
+      this.currentRoute = url.pop().path;
     });
   }
 
-  setupPins(): void {
-    this.subs[this.subs.length] = this.pinList$.subscribe(pins => {
-      this.bricks = [];
-      //this._log['log']('setupPins(): ', pins)
-      pins.forEach(pin => {
-        // Base64 Encode for minor obscurification
-        pin.rKey = btoa(pin.results);
-        this.bricks.push(pin)
-      });
-    });
-  }
-
-  setupMyPins(): void {
-    this.subs[this.subs.length] = this.myPinList$.subscribe(pins => {
-      this.bricks = [];
-      //this._log['log']('setupMyPins(): ', pins)
-      pins.forEach(pin => {
-        // Base64 Encode for minor obscurification
-        pin.pKey = btoa(pin.$key);
-        pin.rKey = btoa(pin.results);
-        this.bricks.push(pin)
-      });
-    });
-  }
-
-  getResultHandle(resultID: string): void {
-    this.myResultObj$ = this._FireDb.getResults(resultID);
-  }
-
-  open(content, question, resultID, pinID) {
-    this._log['log']( "Open Modal: ", atob(resultID), atob(pinID) );
-    this.pinToDelete = question;
+  open(content) {
+    this._log['log']( "Open Modal: ", content);
     this.modalService.open(content).result.then((result) => {
-      this.getResultHandle(atob(resultID));
-      this.myResultObj$.remove();
-      this.myPinList$.remove(atob(pinID));
+    this._log['log']( "Close Modal: ", result);
     }, (reason) => {
       this._log['log']( "Dismissed, do nothing" );
     });
   }
-
-  deleteConfirmation(){
-      this._log['log']( 'popover' )
-
+  openTooltip(number){
+    switch(number){
+      case 1: this.tooltip1.open(); break;
+      case 2: this.tooltip2.open(); break;
+      case 3: this.tooltip3.open(); break;
+    }
+    console.log('fired')
+    
   }
-
-  deletePin(id): void {
-      this._log['log']( 'delete this pin', id )
-  }
-  
-  ngOnDestroy() {
-    for(let sub of this.subs) sub.unsubscribe();
+  closeTooltip(number){
+    switch(number){
+      case 1: this.tooltip1.close(); break;
+      case 2: this.tooltip2.close(); break;
+      case 3: this.tooltip3.close(); break;
+    }
   }
 }

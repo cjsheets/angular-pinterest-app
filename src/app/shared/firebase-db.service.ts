@@ -13,31 +13,26 @@ export class FirebaseDbService {
     private _log: Logger,
   ) {}
 
-  getPolls(): FirebaseListObservable<any> {
-    this._log['log']('getPolls(), limit: 20');
-    return this.af.database.list('/voteApp/polls', {query: {limitToLast: 20}});
+  getPins(): FirebaseListObservable<any> {
+    this._log['log']('getPins(), limit: 20');
+    return this.af.database.list('/pinterestApp/pins', {query: {limitToLast: 20}});
   }
 
-  getMyPolls(id): FirebaseListObservable<any> {
-    this._log['log']('getMyPolls(), limit: 20, UID: ', id);
-    return this.af.database.list('/voteApp/polls', {
+  getMyPins(id): FirebaseListObservable<any> {
+    this._log['log']('getMyPins(), limit: 20, UID: ', id);
+    return this.af.database.list('/pinterestApp/pins', {
       query: {limitToLast: 20, orderByChild: 'owner', equalTo: id}
     });
   }
 
-  getPoll(id): FirebaseObjectObservable<any> {
-    this._log['log']('getPoll(id): ' + id);
-    return this.af.database.object('/voteApp/polls/' + id);
-  }
-
-  getResults(id): FirebaseObjectObservable<any> {
-    this._log['log']('getResults(id): ' + id);
-    return this.af.database.object('/voteApp/results/' + id);
+  getPin(id): FirebaseObjectObservable<any> {
+    this._log['log']('getPin(id): ' + id);
+    return this.af.database.object('/pinterestApp/pins/' + id);
   }
 
   getUser(id): FirebaseObjectObservable<any> {
     this._log['log']('getUser(id): ' + id);
-    let user$ = this.af.database.object('/voteApp/users/' + id)
+    let user$ = this.af.database.object('/pinterestApp/users/' + id)
     user$.subscribe(user => {
       if(!user.created){
         user$.update({created: Date.now()})
