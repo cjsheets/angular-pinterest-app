@@ -48,6 +48,10 @@ footer {
   width: 40%;
 }
 
+a:hover, button:hover{
+  cursor: pointer;
+}
+
 /*modal and tooltips */
 form {
   width: 100%;

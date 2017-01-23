@@ -53,11 +53,11 @@ export class PinsComponent implements OnInit {
         this.pinList$ = this._FireDb.getPins();
         this.setupPins();
 
-      } else { // Route: my-polls
+      } else { // Route: my-pins
         this.subs[this.subs.length] = this._auth.af.auth.subscribe(auth => {
           if(auth) {
-            //this.myPinList$ = this._FireDb.getMyPins(this._auth.getUID());
-            //this.setupPins();
+            this.pinList$ = this._FireDb.getMyPins(this._auth.getUID());
+            this.setupPins();
           }
         });
       }
@@ -124,15 +124,10 @@ export class PinsComponent implements OnInit {
     });
   }
 
-  // addHeart(key){
-  //   this.voteList$ = this._FireDb.getVotes(key);
-  //   let sub = this.voteList$.subscribe(results => {
-  //     let votes = {};
-  //     votes[this._auth.getUID()] = true;
-  //     this.voteList$.push(votes);
-  //   });
-  // }
-    
+  deletePin(key){
+    this.pinList$.remove(key);
+  }
+ 
 }
 
 // http://stackoverflow.com/questions/40381862/angular-2-selector-with-template-content

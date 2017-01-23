@@ -32,4 +32,6 @@ To get more help on the `angular-cli` use `ng --help` or go check out the [Angul
 
 ## To-Do
 
+* **bug:** investigate `auth: null`
 * apply linter to code in all projects
+* load pins automatically after clicking logout
