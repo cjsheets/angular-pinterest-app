@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { DefaultImageDirective } from './default-image.directive';
 import { Logger, ConsoleLogService } from './logger.service';
 
 import { RavenErrorHandler } from './sentry-io.service';
@@ -18,7 +19,11 @@ import { RavenErrorHandler } from './sentry-io.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    DefaultImageDirective
+  ],
+  declarations: [
+    DefaultImageDirective
   ],
   providers: [ 
     { provide: Logger, useClass: ConsoleLogService },

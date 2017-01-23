@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Directive, Input, OnInit, ViewChild } from '@angular/core';
 import { FirebaseListObservable,
   FirebaseObjectObservable } from 'angularfire2';
 import { Subscription }   from 'rxjs/Subscription';
@@ -9,6 +9,7 @@ import {NgbTooltip} from '@ng-bootstrap/ng-bootstrap';
 import { Logger } from '../shared/logger.service';
 import { FirebaseDbService } from '../shared/firebase-db.service';
 import { ActivatedRoute } from '@angular/router';
+import { DefaultImageDirective } from '../shared/default-image.directive';
 
 import {NgbModal, ModalDismissReasons, NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
@@ -47,15 +48,15 @@ export class PinsComponent implements OnInit {
       this.currentRoute = url.pop().path;
 
       if(this.currentRoute == 'ap'){
-        this._log['log']('PinsComponent :: ngOnInit()')
+        //this._log['log']('PinsComponent :: ngOnInit()')
         this.pinList$ = this._FireDb.getPins();
         this.setupPins();
 
       } else { // Route: my-polls
         this.subs[this.subs.length] = this._auth.af.auth.subscribe(auth => {
           if(auth) {
-            this.myPinList$ = this._FireDb.getMyPins(this._auth.getUID());
-            this.setupPins();
+            //this.myPinList$ = this._FireDb.getMyPins(this._auth.getUID());
+            //this.setupPins();
           }
         });
       }
@@ -63,13 +64,11 @@ export class PinsComponent implements OnInit {
   }
 
   setupPins(): void {
-    this.subs[this.subs.length] = this.myPinList$.subscribe(pins => {
+    this.subs[this.subs.length] = this.pinList$.subscribe(pins => {
       this.bricks = [];
       this._log['log']('setupPolls(): ', pins)
       pins.forEach(pin => {
-        // Base64 Encode for minor obscurification
-        // pin.rKey = btoa(pin.results);
-        // this.bricks.push(pin)
+         this.bricks.push(pin)
       });
     });
   }
@@ -77,7 +76,6 @@ export class PinsComponent implements OnInit {
   addPin(url) {
     let results = {owner: 'me', url: url};
     this.pinList$.push(results);
-
   }
 
   open() {
@@ -106,6 +104,10 @@ export class PinsComponent implements OnInit {
       case 2: this.tooltip2.close(); break;
       case 3: this.tooltip3.close(); break;
     }
+  }
+
+  errorHandler(event) {
+    console.debug(event);
   }
 }
 

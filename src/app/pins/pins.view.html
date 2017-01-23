@@ -24,20 +24,19 @@
       <masonry [options]="{transitionDuration: '0.0000001s'}">
         <masonry-brick class="brick" *ngFor="let brick of bricks; let i = index">
           <div class="brick-header">
-            {{brick.question}}
+            
           </div>
-            <div class="brick-body" *ngIf="currentRoute === 'my-pins'">
-              <div>
-                <div class="brick-button" [routerLink]="['/ap', brick.rKey, brick.pKey]">
-                  Edit
-                </div>
-                <div class="brick-button" (click)="open(confirm, brick.question, brick.rKey, brick.pKey)">
-                  Delete
-                </div>
-              </div>
+            <div class="brick-body">
+              <img class="pin" [src]="brick.url"
+                default="https://www.google.com/logos/doodles/2016/120th-anniversary-of-first-modern-olympic-games-6314245085986816-hp2x.jpg">
             </div>
-          <div class="brick-footer" [routerLink]="['/ap', brick.rKey]">
-            Vote
+          <div class="brick-footer">
+            <i class="zmdi zmdi-favorite-outline"></i> 0
+            
+            <i class="zmdi zmdi-close-circle"></i> 0
+            <a [download]="brick.url" [href]="brick.url">
+              <i class="zmdi zmdi-download"></i>
+            </a>
           </div>
           </masonry-brick>
       </masonry>
@@ -51,6 +50,11 @@
 </div>
 
 <button (click)="addPin('www.google.com')">Click Me</button>
+
+  <!--<img [src]="somevalue" (error)="errorHandler($event)">
+  
+  <img [src]="somevalue" default="https://www.google.com/logos/doodles/2016/120th-anniversary-of-first-modern-olympic-games-6314245085986816-hp2x.jpg">-->
+
 
 <!--Thanks to: http://codepen.io/simoberny/pen/pJZJQY -->
 <div id="container-floating">
