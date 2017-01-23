@@ -7,6 +7,7 @@ import { MasonryModule } from 'angular2-masonry';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from './shared/shared.module';
 
+import { EditDialogContent } from './pins/pins.component';
 import { AppComponent } from './app.component';
 import { NavbarModule } from './navbar/navbar.module';
 import { FirebaseDbService } from './shared/firebase-db.service';
@@ -23,8 +24,10 @@ import { AppRoutingModule, routedComponents } from './routing.module';
     AppRoutingModule
   ],
   declarations: [
-    routedComponents
+    routedComponents,
+    EditDialogContent
   ],
+  entryComponents: [EditDialogContent],
   providers: [
     FirebaseDbService
   ],

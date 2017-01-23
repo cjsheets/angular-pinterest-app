@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FirebaseListObservable,
   FirebaseObjectObservable } from 'angularfire2';
 import { Subscription }   from 'rxjs/Subscription';
@@ -10,7 +10,8 @@ import { Logger } from '../shared/logger.service';
 import { FirebaseDbService } from '../shared/firebase-db.service';
 import { ActivatedRoute } from '@angular/router';
 
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons, NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'pins',
@@ -38,21 +39,58 @@ export class PinsComponent implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
+  public model;
+
 
   ngOnInit(): void {
     this.subs[this.subs.length] = this.route.url.subscribe(url => {
       this.currentRoute = url.pop().path;
+
+      if(this.currentRoute == 'ap'){
+        this._log['log']('PinsComponent :: ngOnInit()')
+        this.pinList$ = this._FireDb.getPins();
+        this.setupPins();
+
+      } else { // Route: my-polls
+        this.subs[this.subs.length] = this._auth.af.auth.subscribe(auth => {
+          if(auth) {
+            this.myPinList$ = this._FireDb.getMyPins(this._auth.getUID());
+            this.setupPins();
+          }
+        });
+      }
     });
   }
 
-  open(content) {
-    this._log['log']( "Open Modal: ", content);
-    this.modalService.open(content).result.then((result) => {
-    this._log['log']( "Close Modal: ", result);
-    }, (reason) => {
-      this._log['log']( "Dismissed, do nothing" );
+  setupPins(): void {
+    this.subs[this.subs.length] = this.myPinList$.subscribe(pins => {
+      this.bricks = [];
+      this._log['log']('setupPolls(): ', pins)
+      pins.forEach(pin => {
+        // Base64 Encode for minor obscurification
+        // pin.rKey = btoa(pin.results);
+        // this.bricks.push(pin)
+      });
     });
   }
+
+  addPin(url) {
+    let results = {owner: 'me', url: url};
+    this.pinList$.push(results);
+
+  }
+
+  open() {
+    const modalRef = this.modalService.open(EditDialogContent);
+    modalRef.componentInstance.selectedCaption = 'Some caption';
+    modalRef.result.then((closeResult) => {
+      if(closeResult){
+        
+      }
+    });
+  }
+
+
   openTooltip(number){
     switch(number){
       case 1: this.tooltip1.open(); break;
@@ -68,5 +106,35 @@ export class PinsComponent implements OnInit {
       case 2: this.tooltip2.close(); break;
       case 3: this.tooltip3.close(); break;
     }
+  }
+}
+
+
+// http://stackoverflow.com/questions/40381862/angular-2-selector-with-template-content
+@Component({
+  selector: 'ngbd-modal-content',
+  template: `
+  <div class="modal-header">
+    <h5 class="modal-title">Link to a Pin</h5>
+  </div>
+  <div class="modal-footer">
+<form #f="ngForm" novalidate (ngSubmit)="urlSubmit()">
+    <div class="input-group">
+      <input class="form-control input-sm" placeholder="Image URL"
+        [(ngModel)]="model" name="stocksymbol">
+      <span class="input-group-btn">
+        <button class="btn btn-success col-form-label-sm" type="button"
+         (click)="urlSubmit()">Pin</button>
+      </span>
+    </div>
+</form>
+  </div>
+  `
+})
+export class EditDialogContent {
+  constructor(public activeModal: NgbActiveModal) {}
+  model;
+  urlSubmit(){
+    this.activeModal.close(this.model);
   }
 }

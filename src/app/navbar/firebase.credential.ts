@@ -1,11 +1,11 @@
 import { AngularFireModule, AuthMethods, AuthProviders } from "angularfire2";
 
 export const afConfig = {
-  apiKey: "AIzaSyCOm8FwfjmIjHqLwpKvMfDCvrv1e58Tkt4",
-  authDomain: "fcc-chadsheets-com.firebaseapp.com",
-  databaseURL: "https://fcc-chadsheets-com.firebaseio.com",
-  storageBucket: "fcc-chadsheets-com.appspot.com",
-  messagingSenderId: "487755790032"
+  apiKey: "AIzaSyBXCuM8IYnfFzqmPucXZ7onZFnxLWRdSAA ",
+  authDomain: "angular-pinterest.firebaseapp.com",
+  databaseURL: "https://angular-pinterest.firebaseio.com",
+  storageBucket: "angular-pinterest.appspot.com",
+  messagingSenderId: "590639288494"
 };
 
 export const afAuthConfig = {

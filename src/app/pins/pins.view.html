@@ -50,9 +50,11 @@
   </div>
 </div>
 
+<button (click)="addPin('www.google.com')">Click Me</button>
+
 <!--Thanks to: http://codepen.io/simoberny/pen/pJZJQY -->
 <div id="container-floating">
-  <div class="nd3 nds" (click)="open(add)">
+  <div class="nd3 nds" (click)="open()">
     <p class="letter" (mouseenter)="openTooltip(1)" (mouseleave)="closeTooltip(1)" (click)="closeTooltip(1)">
       <i class="zmdi zmdi-link"></i>
     </p>
@@ -78,36 +80,3 @@
   class="tt3"></div>
   </div>
 </div>
-
-
-<template #confirm let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h5 class="modal-title">Are You Sure?</h5>
-  </div>
-  <div class="modal-body">
-    <p>The pin: &#34;<span style="color: #666666;">{{pinToDelete}}</span>&#34; and all its votes will be permanently removed.</p>
-    <p>Deleted pins are not recoverable.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger" (click)="c()">Yes, Delete It</button>
-    <button type="button" class="btn btn-md btn-outline-secondary" (click)="d()">Cancel</button>
-  </div>
-</template>
-
-<template #add let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h5 class="modal-title">Link to a Pin</h5>
-  </div>
-  <div class="modal-footer">
-<form #f="ngForm" novalidate (ngSubmit)="stockSubmit(f.value)">
-    <div class="input-group">
-      <input class="form-control input-sm" placeholder="Image URL"
-        [(ngModel)]="model" name="stocksymbol">
-      <span class="input-group-btn">
-        <button class="btn btn-success col-form-label-sm" type="button"
-         (click)="stockSubmit(f.value)">Pin</button>
-      </span>
-    </div>
-</form>
-  </div>
-</template>
