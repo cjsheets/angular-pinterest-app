@@ -74,7 +74,7 @@ export class PinsComponent implements OnInit {
   }
 
   addPin(url) {
-    let results = {owner: 'me', url: url};
+    let results = {owner: this._auth.getUID(), url: url};
     this.pinList$.push(results);
   }
 
@@ -83,7 +83,7 @@ export class PinsComponent implements OnInit {
     modalRef.componentInstance.selectedCaption = 'Some caption';
     modalRef.result.then((closeResult) => {
       if(closeResult){
-        console.log('closed: ', closeResult)
+        this.addPin(closeResult)
       }
     });
   }
@@ -107,8 +107,6 @@ export class PinsComponent implements OnInit {
 
     
 }
-
-
 
 // http://stackoverflow.com/questions/40381862/angular-2-selector-with-template-content
 @Component({

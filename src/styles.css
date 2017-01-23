@@ -11,10 +11,15 @@ body, html {
 #wrap {
   min-height: 100%;
 	margin-bottom: -100px; 
+  background-color: #EEEEEE;
 }
 #wrap:after {
   content: "";
   display: block;
+}
+
+nav{
+  border-bottom: 1px solid #CCCCCC;
 }
 
 footer, #wrap:after {

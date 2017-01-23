@@ -3,7 +3,7 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
 
   <div class="row" *ngIf="currentRoute === 'pins'">
     <div class="col-sm-12">
@@ -21,14 +21,10 @@
 
   <div class="row">
     <div class="col-sm" *ngIf="bricks.length > 0">
-      <masonry [options]="{transitionDuration: '0.0000001s'}">
+      <masonry [options]="{transitionDuration: '0.0000001s', fitWidth: true}"  [useImagesLoaded]="true">
         <masonry-brick class="brick" *ngFor="let brick of bricks; let i = index">
-          <div class="brick-header">
-            
-          </div>
             <div class="brick-body">
-              <img class="pin" [src]="brick.url"
-                default="https://www.google.com/logos/doodles/2016/120th-anniversary-of-first-modern-olympic-games-6314245085986816-hp2x.jpg">
+              <img class="pin" [src]="brick.url" default="/assets/img/placeholder.jpg">
             </div>
           <div class="brick-footer">
             <i class="zmdi zmdi-favorite-outline"></i> 0
@@ -40,6 +36,7 @@
           </div>
           </masonry-brick>
       </masonry>
+      <div style="clear: both"></div>
     </div>
     <div class="col-sm text-center" *ngIf="bricks.length === 0">
       <br><br>
@@ -48,14 +45,6 @@
     </div>
   </div>
 </div>
-
-<button (click)="checkUrl('https://www.gra32vatar.com/avatar/6dcc2c561ed6b4f300d52c1c0bbcf50a?s=328&d=identicon&r=PG')">Click Me</button>
-
-<img [src]="testImage" (error)="errorHandler($event)" class="pixel-image">
-
-  <!--<img [src]="somevalue" (error)="errorHandler($event)">
-  
-  <img [src]="somevalue" default="https://www.google.com/logos/doodles/2016/120th-anniversary-of-first-modern-olympic-games-6314245085986816-hp2x.jpg">-->
 
 
 <!--Thanks to: http://codepen.io/simoberny/pen/pJZJQY -->
