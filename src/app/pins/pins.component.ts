@@ -83,11 +83,10 @@ export class PinsComponent implements OnInit {
     modalRef.componentInstance.selectedCaption = 'Some caption';
     modalRef.result.then((closeResult) => {
       if(closeResult){
-        
+        console.log('closed: ', closeResult)
       }
     });
   }
-
 
   openTooltip(number){
     switch(number){
@@ -106,10 +105,9 @@ export class PinsComponent implements OnInit {
     }
   }
 
-  errorHandler(event) {
-    console.debug(event);
-  }
+    
 }
+
 
 
 // http://stackoverflow.com/questions/40381862/angular-2-selector-with-template-content
@@ -120,23 +118,52 @@ export class PinsComponent implements OnInit {
     <h5 class="modal-title">Link to a Pin</h5>
   </div>
   <div class="modal-footer">
-<form #f="ngForm" novalidate (ngSubmit)="urlSubmit()">
-    <div class="input-group">
-      <input class="form-control input-sm" placeholder="Image URL"
-        [(ngModel)]="model" name="stocksymbol">
-      <span class="input-group-btn">
-        <button class="btn btn-success col-form-label-sm" type="button"
-         (click)="urlSubmit()">Pin</button>
-      </span>
-    </div>
-</form>
+    <form #f="ngForm" novalidate (ngSubmit)="checkUrl()">
+        <div class="input-group" [class.has-danger]="linkError">
+          <input class="form-control input-sm" placeholder="Image URL"
+            [(ngModel)]="model" name="stocksymbol">
+          <span class="input-group-btn">
+            <button class="btn col-form-label-sm" type="button" [class.btn-success]="!linkError"
+            (click)="checkUrl()" [class.btn-danger]="linkError">Pin</button>
+          </span>
+        </div>
+        <div class="alert alert-danger" *ngIf="linkError">There was an issue with this url.</div>
+    </form>
+    <img [src]="testImage" (error)="errorHandler($event, callerID)" class="pixel-image">
   </div>
-  `
+  `,
+  styleUrls: ['./pins.view.css']
 })
 export class EditDialogContent {
   constructor(public activeModal: NgbActiveModal) {}
   model;
+  public testImage = "/assets/img/1x1.png";
+  public linkError = false;
+  callerID;
+
   urlSubmit(){
+    this.model = null;
     this.activeModal.close(this.model);
   }
+
+  checkUrl(){
+    let cUrl = this.cleanUrl(this.model)
+    this.callerID = setTimeout( _ => {
+      //this.addPin(cUrl)
+      this.linkError = false;
+      this.activeModal.close(this.model);
+    }, 500);
+    this.testImage = cUrl;
+  }
+
+  cleanUrl(url){
+    return url.replace(/[^-A-Za-z0-9+&@#/%?=~_|!:,.;\(\)]/g, "");
+  }
+
+  errorHandler(event, callerID) {
+    clearTimeout(callerID);
+    this.linkError = true;
+    this.testImage = "/assets/img/1x1.png"
+  }
+
 }

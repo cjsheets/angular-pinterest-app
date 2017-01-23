@@ -49,7 +49,9 @@
   </div>
 </div>
 
-<button (click)="addPin('www.google.com')">Click Me</button>
+<button (click)="checkUrl('https://www.gra32vatar.com/avatar/6dcc2c561ed6b4f300d52c1c0bbcf50a?s=328&d=identicon&r=PG')">Click Me</button>
+
+<img [src]="testImage" (error)="errorHandler($event)" class="pixel-image">
 
   <!--<img [src]="somevalue" (error)="errorHandler($event)">
   

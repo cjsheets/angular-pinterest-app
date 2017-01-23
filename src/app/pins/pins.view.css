@@ -3,6 +3,15 @@
   max-width: 200px;
 }
 
+.pixel-image{
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.alert{
+  padding: 0.25rem 1.25rem;
+  margin: 15px 0px 0px;
+}
 
 
 /**  Floating + Button  **/
