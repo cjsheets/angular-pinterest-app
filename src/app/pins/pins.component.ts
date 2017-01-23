@@ -22,6 +22,7 @@ import {NgbModal, ModalDismissReasons, NgbActiveModal, NgbModalRef} from '@ng-bo
 export class PinsComponent implements OnInit { 
   private currentRoute: string;
   private pinList$: FirebaseListObservable<any>;
+  private pinObj$: FirebaseObjectObservable<any>;
   private myPinList$: FirebaseListObservable<any>;
   private myResultObj$: FirebaseObjectObservable<any>;
   private bricks: Array<{}> = [];
@@ -68,6 +69,13 @@ export class PinsComponent implements OnInit {
       this.bricks = [];
       this._log['log']('setupPolls(): ', pins)
       pins.forEach(pin => {
+        if (pin['votes']){
+          pin['numvotes'] = Object.keys(pin.votes).length;
+          pin['myvote'] = (pin.votes[this._auth.getUID()]) ? true : false;
+        } else {
+          pin['numvotes'] = 0;
+          pin['myvote'] = false;
+        }
          this.bricks.push(pin)
       });
     });
@@ -105,6 +113,25 @@ export class PinsComponent implements OnInit {
     }
   }
 
+  addHeart(key){
+    this.pinObj$ = this._FireDb.getPin(key);
+    let sub = this.pinObj$.subscribe(results => {
+      let newVotes = {}, oldVotes = results.votes;
+      newVotes[this._auth.getUID()] = true;
+      console.log('preparing to update...', newVotes, oldVotes)
+      this.pinObj$.update({votes: Object.assign(newVotes, oldVotes)});
+      console.log('updated wiht: ', newVotes)
+    });
+  }
+
+  // addHeart(key){
+  //   this.voteList$ = this._FireDb.getVotes(key);
+  //   let sub = this.voteList$.subscribe(results => {
+  //     let votes = {};
+  //     votes[this._auth.getUID()] = true;
+  //     this.voteList$.push(votes);
+  //   });
+  // }
     
 }
 

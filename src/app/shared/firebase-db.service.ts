@@ -25,6 +25,11 @@ export class FirebaseDbService {
     });
   }
 
+  getVotes(id): FirebaseListObservable<any> {
+    this._log['log']('getVotes(), limit: 20, UID: ', id);
+    return this.af.database.list('/pinterestApp/pins/' + id + '/votes', {query: {limitToLast: 20}});
+  }
+
   getPin(id): FirebaseObjectObservable<any> {
     this._log['log']('getPin(id): ' + id);
     return this.af.database.object('/pinterestApp/pins/' + id);

@@ -75,20 +75,25 @@
   align-items: center;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
-  justify-content: center;
-  padding: 10px 0px;
-  background: rgba(0, 146, 226, 1);
-  color: #FFFFFF;
+  padding: 6px 0px 4px;
+  background: #DDDDDD;
+  color: #333333;
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
+  vertical-align:middle
 }
-.brick-footer:hover {
-  background: rgba(0, 146, 226, 0.8);
+.brick-footer i {
   cursor: pointer;
+  font-size: 1.2rem;
 }
-.brick-button:hover {
-  background: rgb(220, 220, 220);
-  cursor: pointer;
+.brick-footer a, .brick-footer a:hover {
+  color: #666666;
+}
+.brick:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2); 
+}
+.redheart {
+  color: #d40000;
 }
 
 
